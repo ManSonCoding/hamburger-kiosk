@@ -1,6 +1,6 @@
 # hamburger-kiosk
 
-##햄버거 키오스크
+## 햄버거 키오스크
 
 ```bash
 # Clone this repository
