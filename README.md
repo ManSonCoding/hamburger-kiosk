@@ -19,7 +19,21 @@ npm install && npm start
 ```
 
 ## 카카오페이 기능은 장고 서버 동작 필요
+```bash
+pip install django 
 
+pip install django-debug-toolbar
+
+cd django_rest
+
+# 현재 디렉토리에 manage.py있는지 확인
+cd ls
+
+# 장고 서버 실행
+python manage.py runserver 
+
+
+```
 
 ## 현재 구현해야 하는 기능
 - dialogflow node js 에서 동작
