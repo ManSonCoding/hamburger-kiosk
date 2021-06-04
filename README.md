@@ -6,7 +6,7 @@
 # Clone this repository
 git clone https://github.com/ManSonCoding/hamburger-kiosk
 # Go into the repository
-
+unzip hamburger-kiosk.zip
 #kiosk 폴더 압축을 푸시고
 cd hamburger-kiosk
 # Install dependencies and run the app
