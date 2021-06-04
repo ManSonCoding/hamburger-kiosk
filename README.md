@@ -20,3 +20,4 @@ npm install && npm start
 - dialogflow node js 에서 동작
 - 채팅 UI 'DialogFlow-Chatbot-web-SDK-master' 와 같이 구현
 - DB연동
+- 장고 서버 배포
