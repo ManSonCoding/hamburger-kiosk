@@ -6,9 +6,14 @@
 # Clone this repository
 git clone https://github.com/ManSonCoding/hamburger-kiosk
 # Go into the repository
-unzip hamburger-kiosk.zip
-#kiosk 폴더 압축을 푸시고
 cd hamburger-kiosk
+
+#kiosk 폴더 압축을 푸시고
+unzip hamburger-kiosk.zip
+
+#한번 더 디렉토리 이동
+cd hamburger-kiosk
+
 # Install dependencies and run the app
 npm install && npm start
 ```
