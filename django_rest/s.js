@@ -1,0 +1,13 @@
+curl -v -X POST "https://kapi.kakao.com/v1/payment/ready" \
+-H "Authorization: KakaoAK 99a836422e698b27efd4eaec3c62fef7" \
+--data-urlencode "cid=TC0ONETIME" \
+--data-urlencode "partner_order_id=partner_order_id" \
+--data-urlencode "partner_user_id=partner_user_id" \
+--data-urlencode "item_name=초코파이" \
+--data-urlencode "quantity=1" \
+--data-urlencode "total_amount=2200" \
+--data-urlencode "vat_amount=200" \
+--data-urlencode "tax_free_amount=0" \
+--data-urlencode "approval_url=https://developers.kakao.com/success" \
+--data-urlencode "fail_url=https://developers.kakao.com/fail" \
+--data-urlencode "cancel_url=https://developers.kakao.com/cancel"
