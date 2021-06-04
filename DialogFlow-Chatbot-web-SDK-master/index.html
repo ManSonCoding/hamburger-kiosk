@@ -1,0 +1,183 @@
+<html lang="en">
+<head>
+	<title>BitsBot</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="mycss.css" type="text/css">
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+			crossorigin="anonymous"></script>
+	<script src="responsivevoice.js"></script>
+
+	<script type="text/javascript">
+		const accessToken = "ENTER YOUR ACCESS TOKEN HERE.";
+		const baseUrl = "https://api.api.ai/v1/";
+
+		$(document).ready(function() {
+            $("#input").keypress(function(event) {
+                if (event.which === 13) {
+                    event.preventDefault();
+                    send();
+                }
+            });
+            $("#rec").click(function(event) {
+            	console.log(event);
+                switchRecognition();
+            });
+        });
+
+		let recognition;
+
+		function startRecognition() {
+            recognition = new webkitSpeechRecognition();
+            recognition.onstart = function(event) {
+				console.log(event);
+                updateRec();
+            };
+            recognition.onresult = function(event) {
+				let text = "";
+				for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    text += event.results[i][0].transcript;
+                }
+                setInput(text);
+                stopRecognition();
+            };
+            recognition.onend = function() {
+                stopRecognition();
+            };
+            recognition.lang = "en-US";
+            recognition.start();
+        }
+
+        function stopRecognition() {
+            if (recognition) {
+                recognition.stop();
+                recognition = null;
+            }
+            updateRec();
+        }
+
+        function switchRecognition() {
+            if (recognition) {
+                stopRecognition();
+            } else {
+                startRecognition();
+            }
+        }
+
+        function setInput(text) {
+            $("#input").val(text);
+            send();
+        }
+
+        function updateRec() {
+            if (recognition) {
+                document.getElementById('rec').classList.remove("mic");
+                document.getElementById('load-voice').style.display = "block";
+                document.getElementById('rec').classList.add('close');
+            }
+            else {
+                document.getElementById('rec').classList.remove("close");
+                document.getElementById('load-voice').style.display = "none";
+                document.getElementById('rec').classList.add('mic');
+            }
+        }
+
+        function send() {
+            document.getElementById('load').style.display = "block";
+			const text = $("#input").val();
+			document.getElementById('input').value = "";
+            if (text === ""){
+				document.getElementById('input-error').style.display = "block";
+                document.getElementById('load').style.display = "none";
+			}
+			else {
+                document.getElementById('input-error').style.display = "none";
+                setRequest(text);
+                $.ajax({
+                    type: "POST",
+                    url: baseUrl + "query?v=20150910",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    headers: {
+                        "Authorization": "Bearer " + accessToken
+                    },
+                    data: JSON.stringify({query: text, lang: "en", sessionId: "somerandomthing"}),
+                    success: function (data) {
+						const respText = data.result.fulfillment.speech;
+						console.log("Res: " + respText);
+                        document.getElementById('load').style.display = "none";
+                        responsiveVoice.speak(respText);
+                        setResponse(respText);
+                    },
+                    error: function () {
+						const val = "<b>Unable to connect internet. Please connect and Try again.</b>";
+						const template = "<div class='row'><div class='message message-bot message-error'>" + val + "</div></div>";
+						const chatWindow = $(".chat-window");
+						chatWindow.append(template);
+                        chatWindow.scrollTop(chatWindow[0].scrollHeight);
+                        document.getElementById('load').style.display = "none";
+                    }
+                });
+            }
+        }
+
+        function setRequest(val) {
+			const template = "<div class='row'><div class='message message-user'>" + val + "</div></div>";
+			const chatWindow = $(".chat-window");
+			chatWindow.append(template);
+            chatWindow.scrollTop(chatWindow[0].scrollHeight);
+        }
+
+        function setResponse(val) {
+			const template = "<div class='row'><div class='message message-bot'>" + val + "</div></div>";
+			const chatWindow = $(".chat-window");
+			chatWindow.append(template);
+            chatWindow.scrollTop(chatWindow[0].scrollHeight);
+        }
+
+	</script>
+
+</head>
+
+<body>
+<div>
+
+	<div class="logo">
+		<img class="logo-img" src="logo.jpg" alt="logo">
+		<div class="hori-line"></div>
+		<a class="bit">MyBot<a class="small">by YARD</a></a>
+		<br/><br/>
+
+		<div class="btn info tooltip">
+			<span class="tooltiptext info-tip">
+				Description of your chatbot here.
+			</span>
+		</div>
+	</div>
+
+	<div class="load" id="load">
+		<img src="loading.gif" alt="loading"><br/>
+		<span class="load-text">Thinking...</span>
+	</div>
+
+	<div class="load" id="load-voice">
+		<img src="loading.gif" alt="loading"><br/>
+		<span class="load-text">Listening...</span>
+	</div>
+
+	<div class="chat-window"></div>
+
+	<div class="tooltip">
+		<label for="input"></label><input id="input" type="text" placeholder="Enter your query Here..." autofocus autocomplete="true">
+		<span id="input-error" class="input-error">Please enter your query here or voice search</span>
+	</div>
+	<button class="btn send tooltip" onclick="send()"><span class="tooltiptext">send</span></button>
+	<button class="btn mic tooltip" id="rec"><span class="tooltiptext">Voice Input</span></button>
+
+</div>
+</body>
+</html>
