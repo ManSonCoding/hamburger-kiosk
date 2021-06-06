@@ -1,0 +1,51 @@
+{% load static %}
+<html>
+<body style="  background-color: #F7E600;  color: #012C1B;">
+
+<style>
+
+#row mt-5{
+}
+
+
+    button{
+
+        display: inline-block;
+  float: center;
+
+  line-height: 90%;
+
+  outline: none;
+  border: none;
+       border-radius:50px;
+  width: 80%;
+      text-align: center;
+  display: inline-block;
+
+  background-color: #00F190;
+  margin-bottom: 50px;
+</style>
+<style>
+  button:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+</style>
+<style>
+button:focus {
+  width: 100%;
+  margin-left: 0%;
+}
+  </style>
+
+  <div class="row mt-5">
+    <form method="post" class="col-12 text-center">
+      {% csrf_token %}
+      <center>
+      <button class="btn btn-warning"> <h1 type="button" onclick = "location.href = 'http://127.0.0.1:8000/kakaopay'" class="btm_image" id="img_btn" ><img  src="/static/img/payment_icon_yellow_large.png"></h1>
+</button>
+      </center>
+    </form>
+  </div>
+</body>
+</html>
